@@ -5,13 +5,25 @@ def is_sunk(ship):
     """Check if the ship is sunk.
     Return a Boolean value.
     """
-    pass
+    if len(ship[4])==ship[3]:
+        return True
+    else:
+        return False
 
 def ship_type(ship):
     """Check the ship type.
     Return a string ("battleship", "cruiser", "destroyer", or "submarine").
     """
-    pass
+    if ship[3] == 1:
+        return "submarine"
+    elif ship[3] == 2:
+        return "destroyer"
+    elif ship[3] == 3:
+        return "cruiser"
+    elif ship[3] == 4:
+        return "battleship"
+    else:
+        return "ship not found" # I don't need it?
 
 def is_open_sea(row, column, fleet):
     """Check if the square given by row and column neither contains
