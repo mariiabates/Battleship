@@ -2,44 +2,78 @@
 
 
 def is_sunk(ship):
-    #remove pass and add your implementation
+    """Check if the ship is sunk.
+    Return a Boolean value.
+    """
     pass
 
 def ship_type(ship):
-    #remove pass and add your implementation
+    """Check the ship type.
+    Return a string ("battleship", "cruiser", "destroyer", or "submarine").
+    """
     pass
 
 def is_open_sea(row, column, fleet):
-    #remove pass and add your implementation
+    """Check if the square given by row and column neither contains
+    nor is adjacent to some ship in the fleet. 
+    Return a Boolean value.
+    """
     pass
 
 def ok_to_place_ship_at(row, column, horizontal, length, fleet):
-    #remove pass and add your implementation
+    """Check if addition of a ship to the fleet (specified by row, column, horizontal, and length) 
+    results in a legal arrangement. 
+    Return a Boolean value.
+    """
+    # Helper function
     pass
 
 def place_ship_at(row, column, horizontal, length, fleet):
-    #remove pass and add your implementation
+    """Add a ship, specified by row, column, horizontal, and length to the fleet.
+    Return a new fleet.
+    """
+    # Helper function
     pass
 
 def randomly_place_all_ships():
-    #remove pass and add your implementation
+    """Make a random legal arrangement of 10 ships in the ocean. 
+    This function makes use of the functions ok_to_place_ship_at and place_ship_at.
+    Return a fleet.
+    """
+    # while length(fleet)!=10:
+        # if ok_to_place_ship_at(): 
+            # call place_ship_at()
     pass
 
 def check_if_hits(row, column, fleet):
-    #remove pass and add your implementation
+    """Check if the shot of the human player at the square represented by row and column
+    hits any of the ships of the fleet.
+    Return a Boolean value.
+    """
+    # if check_if_hits==True:
+        #call hit
     pass
 
 def hit(row, column, fleet):
-    #remove pass and add your implementation
+    """Perform a hit in the fleet at the square represented by row and column. 
+    Return a tuple (fleet1, ship) where ship is the ship from the fleet and fleet1 is the fleet resulting from this hit.
+    """
+    # Helper function
     pass
 
 def are_unsunk_ships_left(fleet):
-    #remove pass and add your implementation
+    """Check if there are ships in the fleet that are still not sunk.
+    Return a Boolean value.
+    """
     pass
 
 def main():
-    #the implementation provided below is indicative only
-    #you should improve it or fully rewrite to provide better functionality (see readme file)
+    """Prompt the user to call out rows and columns of shots 
+    and outputs the responses of the computer iteratively until the game stops.
+    (a) there must be an option for the human player to quit the game at any time, 
+    (b) the program must never crash (i.e., no termination with Python error messages), whatever the human player does.
+    Returns nothing.
+    """
     current_fleet = randomly_place_all_ships()
 
     game_over = False
@@ -58,7 +92,7 @@ def main():
         else:
             print("You missed!")
 
-        if not are_unsunk_shis_left(current_fleet): game_over = True
+        if not are_unsunk_ships_left(current_fleet): game_over = True
 
     print("Game over! You required", shots, "shots.")
 
