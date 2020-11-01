@@ -35,9 +35,21 @@ def test_ok_to_place_ship_at1():
     assert True
 
 def test_place_ship_at1():
-    assert True
+    fleet = []
+    row = 2 
+    column = 3 
+    horizontal = False
+    length = 3
+    assert place_ship_at(row, column, horizontal, length, fleet) == [(2, 3, False, 3, {})]
+    fleet = [(2, 3, False, 3, {})]
+    row = 4
+    column = 6
+    horizontal = True
+    length = 2
+    assert place_ship_at(row, column, horizontal, length, fleet) == [(2, 3, False, 3, {}), (4, 6, True, 2, {})]
 
 def test_check_if_hits1():
+    # If hit same twice?
     fleet = [(2, 3, False, 3, {(2,3)}), (4, 6, True, 2, {})]
     # Tests for the 1st ship (vertical)
     row = 4
@@ -60,7 +72,10 @@ def test_check_if_hits1():
     assert check_if_hits(row, column, fleet) == False
 
 def test_hit1():
-    assert True
+    fleet = [(2, 3, False, 3, {}), (4, 6, True, 2, {})]
+    row = 4
+    column = 3
+    assert hit(row, column, fleet) == ([(2, 3, False, 3, {(4, 3)}), (4, 6, True, 2, {})], (2, 3, False, 3, {}))
 
 def test_are_unsunk_ships_left1():
     ship1 = (2, 3, False, 3, {(2,3), (3,3), (4,3)}) # sunk

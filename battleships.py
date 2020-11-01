@@ -55,8 +55,8 @@ def place_ship_at(row, column, horizontal, length, fleet):
     """Add a ship, specified by row, column, horizontal, and length to the fleet.
     Return a new fleet.
     """
-    # Helper function
-    pass
+    fleet.append((row, column, horizontal, length, {}))
+    return fleet # Can I modify?
 
 def randomly_place_all_ships():
     """Make a random legal arrangement of 10 ships in the ocean. 
@@ -90,8 +90,12 @@ def hit(row, column, fleet):
     """Perform a hit in the fleet at the square represented by row and column. 
     Return a tuple (fleet1, ship) where ship is the ship from the fleet and fleet1 is the fleet resulting from this hit.
     """
-    # Helper function
-    pass
+    # result = (,)
+    # for ship in fleet:
+    # fleet = [(2, 3, False, 3, {}), (4, 6, True, 2, {})]
+    # row = 4
+    # column = 3
+    # ([(2, 3, False, 3, {(4, 3)}), (4, 6, True, 2, {})], (2, 3, False, 3, {}))
 
 def are_unsunk_ships_left(fleet):
     """Check if there are ships in the fleet that are still not sunk.
