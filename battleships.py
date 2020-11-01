@@ -5,7 +5,9 @@ def is_sunk(ship):
     """Check if the ship is sunk.
     Return a Boolean value.
     """
-    if len(ship[4])==ship[3]:
+    hits = ship[4]
+    ship_length = ship[3]
+    if len(hits) == ship_length:
         return True
     else:
         return False
@@ -77,7 +79,15 @@ def are_unsunk_ships_left(fleet):
     """Check if there are ships in the fleet that are still not sunk.
     Return a Boolean value.
     """
-    pass
+    #if every ship in fleet is_sunk:
+        #return False
+    #else:
+        #return True
+    result = False
+    for ship in fleet:
+        if not is_sunk(ship):
+            result = True
+    return result
 
 def main():
     """Prompt the user to call out rows and columns of shots 

@@ -4,18 +4,20 @@ from battleships import *
 def test_is_sunk1():
     s = (2, 3, False, 3, {(2,3), (3,3), (4,3)})
     assert is_sunk(s) == True
-    s = (2, 3, False, 3, {(2,3), (3,3)})
+    s = (4, 5, False, 3, {(4,5), (5,5)})
     assert is_sunk(s) == False
 
 def test_ship_type1():
-    s1 = (2, 3, False, 1, {})
+    s1 = (0, 0, True, 1, {}) # generate ships randomly?
     assert ship_type(s1) == "submarine"
-    s2 = (2, 3, False, 2, {})
+    s2 = (2, 3, False, 2, {(2,3), (2,4)})
     assert ship_type(s2) == "destroyer"
-    s3 = (2, 3, False, 3, {})
+    s3 = (5, 5, True, 3, {(5,5)})
     assert ship_type(s3) == "cruiser"
-    s4 = (2, 3, False, 4, {})
+    s4 = (2, 1, False, 4, {})
     assert ship_type(s4) == "battleship"
+    s5 = (1, 3, True, 4, {(1,3), (1,4)})
+    assert ship_type(s5) == "battleship"
 
 def test_is_open_sea1():
     assert True
@@ -33,5 +35,13 @@ def test_hit1():
     assert True
 
 def test_are_unsunk_ships_left1():
-    assert True
+    ship1 = (2, 3, False, 3, {(2,3), (3,3), (4,3)}) # sunk
+    ship2 = (4, 5, False, 3, {(4,5), (5,5)}) # not sunk
+    fleet1 = [ship1, ship2]*5 
+    fleet2 = [ship1]*10
+    fleet3 = [ship2]*10
+    assert are_unsunk_ships_left(fleet1) == True
+    assert are_unsunk_ships_left(fleet2) == False
+    assert are_unsunk_ships_left(fleet3) == True
+    
     
