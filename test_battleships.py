@@ -20,7 +20,17 @@ def test_ship_type1():
     assert ship_type(s5) == "battleship"
 
 def test_is_open_sea1():
-    assert True
+    fleet = [(2, 3, False, 3, {(2,3)})]
+    row = 5
+    column = 4
+    assert is_open_sea(row, column, fleet) == False
+    row = 5
+    column = 5
+    assert is_open_sea(row, column, fleet) == True
+    fleet = [(4, 6, True, 2, {})]
+    assert is_open_sea(row, column, fleet) == False
+    fleet = [(2, 3, False, 3, {(2,3)}), (4, 6, True, 2, {})]
+    assert is_open_sea(row, column, fleet) == False
 
 def test_ok_to_place_ship_at1():
     assert True

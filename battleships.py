@@ -32,7 +32,16 @@ def is_open_sea(row, column, fleet):
     nor is adjacent to some ship in the fleet. 
     Return a Boolean value.
     """
-    pass
+    for ship in fleet:
+        horizontal = ship[2]
+        ship_row = ship[0]
+        ship_col = ship[1]
+        ship_len = ship[3]
+        if not horizontal and abs(ship_row - row) <= ship_len and abs(ship_col - column) <= 1:
+            return False
+        if horizontal and abs(ship_row - row) <= 1 and abs(ship_col - column) <= ship_len:
+            return False
+    return True
 
 def ok_to_place_ship_at(row, column, horizontal, length, fleet):
     """Check if addition of a ship to the fleet (specified by row, column, horizontal, and length) 
