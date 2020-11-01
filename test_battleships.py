@@ -24,7 +24,6 @@ def test_is_open_sea1():
     row = 5
     column = 4
     assert is_open_sea(row, column, fleet) == False
-    row = 5
     column = 5
     assert is_open_sea(row, column, fleet) == True
     fleet = [(4, 6, True, 2, {})]
@@ -39,7 +38,26 @@ def test_place_ship_at1():
     assert True
 
 def test_check_if_hits1():
-    assert True
+    fleet = [(2, 3, False, 3, {(2,3)}), (4, 6, True, 2, {})]
+    # Tests for the 1st ship (vertical)
+    row = 4
+    column = 2
+    assert check_if_hits(row, column, fleet) == False
+    column = 3
+    assert check_if_hits(row, column, fleet) == True
+    row = 5
+    assert check_if_hits(row, column, fleet) == False
+    row = 1
+    column = 3
+    assert check_if_hits(row, column, fleet) == False
+    # Tests for the 2nd ship (horizontal)
+    row = 4
+    column = 5
+    assert check_if_hits(row, column, fleet) == False
+    column = 7
+    assert check_if_hits(row, column, fleet) == True
+    row = 3
+    assert check_if_hits(row, column, fleet) == False
 
 def test_hit1():
     assert True
