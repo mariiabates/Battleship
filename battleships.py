@@ -48,8 +48,16 @@ def ok_to_place_ship_at(row, column, horizontal, length, fleet):
     results in a legal arrangement. 
     Return a Boolean value.
     """
-    # Helper function
-    pass
+    for ship in fleet:   
+        # horizontal = ship[2]
+        ship_row = ship[0]
+        ship_col = ship[1]
+        ship_len = ship[3]
+        if not horizontal and (ship_row <= row + length and row <= ship_row + ship_len) and ship_col - 1 <= column <= ship_col + 1:
+            return False
+        if horizontal and ship_row - 1 <= row <= ship_row + ship_len and column + length >= ship_col:
+            return False
+    return True
 
 def place_ship_at(row, column, horizontal, length, fleet):
     """Add a ship, specified by row, column, horizontal, and length to the fleet.
@@ -90,6 +98,8 @@ def hit(row, column, fleet):
     """Perform a hit in the fleet at the square represented by row and column. 
     Return a tuple (fleet1, ship) where ship is the ship from the fleet and fleet1 is the fleet resulting from this hit.
     """
+    for ship in fleet:
+        if ship[0]
     # result = (,)
     # for ship in fleet:
     # fleet = [(2, 3, False, 3, {}), (4, 6, True, 2, {})]

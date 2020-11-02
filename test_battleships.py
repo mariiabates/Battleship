@@ -1,3 +1,4 @@
+#pylint: skip-file
 import pytest
 from battleships import *
 
@@ -32,7 +33,63 @@ def test_is_open_sea1():
     assert is_open_sea(row, column, fleet) == False
 
 def test_ok_to_place_ship_at1():
-    assert True
+    # Test horizontal ship with vertical 
+    fleet = [(3, 3, False, 3, {(2,3)}), (4, 6, True, 2, {})] 
+
+    row = 2 # upper bound
+    column = 1
+    horizontal = True
+    length = 3
+    assert ok_to_place_ship_at(row, column, horizontal, length, fleet) == False
+    length = 2
+    assert ok_to_place_ship_at(row, column, horizontal, length, fleet) == False
+    length = 1
+    assert ok_to_place_ship_at(row, column, horizontal, length, fleet) == True
+
+    row = 6 # lower bound
+    length = 3
+    assert ok_to_place_ship_at(row, column, horizontal, length, fleet) == False
+    length = 2
+    assert ok_to_place_ship_at(row, column, horizontal, length, fleet) == False
+    length = 1
+    assert ok_to_place_ship_at(row, column, horizontal, length, fleet) == True
+
+    row = 1 # upper bound
+    column = 1
+    horizontal = True
+    length = 3
+    fleet = [(3, 3, False, 3, {(2,3)}), (4, 6, True, 2, {})] 
+    assert ok_to_place_ship_at(row, column, horizontal, length, fleet) == True
+    length = 2
+    assert ok_to_place_ship_at(row, column, horizontal, length, fleet) == True
+    length = 1
+    assert ok_to_place_ship_at(row, column, horizontal, length, fleet) == True
+
+    row = 7 # lower bound
+    column = 1
+    horizontal = True
+    length = 3
+    fleet = [(3, 3, False, 3, {(2,3)}), (4, 6, True, 2, {})] 
+    assert ok_to_place_ship_at(row, column, horizontal, length, fleet) == True
+    length = 2
+    assert ok_to_place_ship_at(row, column, horizontal, length, fleet) == True
+    length = 1
+    assert ok_to_place_ship_at(row, column, horizontal, length, fleet) == True
+
+def test_ok_to_place_ship_at2():
+    # Test vertical ship with vertical
+    fleet = [(3, 3, False, 3, {(2,3)}), (4, 6, True, 2, {})] 
+    row = 1 # upper bound
+    column = 3
+    horizontal = False
+    length = 2
+    assert ok_to_place_ship_at(row, column, horizontal, length, fleet) == False
+    length = 1
+    assert ok_to_place_ship_at(row, column, horizontal, length, fleet) == True
+    row = 6 # lower bound
+    assert ok_to_place_ship_at(row, column, horizontal, length, fleet) == False
+    row = 7
+    assert ok_to_place_ship_at(row, column, horizontal, length, fleet) == True
 
 def test_place_ship_at1():
     fleet = []
@@ -72,6 +129,7 @@ def test_check_if_hits1():
     assert check_if_hits(row, column, fleet) == False
 
 def test_hit1():
+    # Check return values
     fleet = [(2, 3, False, 3, {}), (4, 6, True, 2, {})]
     row = 4
     column = 3
