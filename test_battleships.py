@@ -35,8 +35,7 @@ def test_is_open_sea1():
 def test_ok_to_place_ship_at1():
     # Test horizontal ship with vertical 
     fleet = [(3, 3, False, 3, {(2,3)}), (4, 6, True, 2, {})] 
-
-    row = 2 # upper bound
+    row = 2
     column = 1
     horizontal = True
     length = 3
@@ -90,6 +89,46 @@ def test_ok_to_place_ship_at2():
     assert ok_to_place_ship_at(row, column, horizontal, length, fleet) == False
     row = 7
     assert ok_to_place_ship_at(row, column, horizontal, length, fleet) == True
+
+def test_ok_to_place_ship_at3():
+    # Test horizontal ship with horizontal
+    fleet = [(4, 6, True, 2, {})]
+    column = 6
+    horizontal = True
+    length = 3
+    # Test upper and lower bound
+    for row in {2, 6}:
+        assert ok_to_place_ship_at(row, column, horizontal, length, fleet) == True
+    for row in {3, 5}:
+        assert ok_to_place_ship_at(row, column, horizontal, length, fleet) == False
+    row = 5 
+    column = 2 # left bound
+    assert ok_to_place_ship_at(row, column, horizontal, length, fleet) == True
+    column = 3
+    assert ok_to_place_ship_at(row, column, horizontal, length, fleet) == False
+    column = 8 # right bound
+    assert ok_to_place_ship_at(row, column, horizontal, length, fleet) == False
+    column = 9 
+    assert ok_to_place_ship_at(row, column, horizontal, length, fleet) == True
+
+def test_ok_to_place_ship_at4():
+    # Test vertical ship with horizontal
+    fleet = [(4, 6, True, 2, {})]
+    horizontal = False
+    length = 2
+    # Test upper and lower bound
+    column = 6
+    for row in {2, 5}: 
+        assert ok_to_place_ship_at(row, column, horizontal, length, fleet) == False
+    for row in {1, 6}: 
+        assert ok_to_place_ship_at(row, column, horizontal, length, fleet) == True
+    # Test left and right bound
+    row = 4
+    for column in {4, 9}:
+        assert ok_to_place_ship_at(row, column, horizontal, length, fleet) == True
+    for column in {5, 7}: 
+        assert ok_to_place_ship_at(row, column, horizontal, length, fleet) == False
+    
 
 def test_place_ship_at1():
     fleet = []
