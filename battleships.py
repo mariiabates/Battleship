@@ -7,10 +7,7 @@ def is_sunk(ship):
     """
     hits = ship[4]
     ship_length = ship[3]
-    if len(hits) == ship_length:
-        return True
-    else:
-        return False
+    return len(hits) == ship_length
 
 def ship_type(ship):
     """Check the ship type.
@@ -48,16 +45,33 @@ def ok_to_place_ship_at(row, column, horizontal, length, fleet):
     results in a legal arrangement. 
     Return a Boolean value.
     """
-    for ship in fleet:   
-        # horizontal = ship[2]
-        ship_row = ship[0]
-        ship_col = ship[1]
-        ship_len = ship[3]
-        if not horizontal and (ship_row <= row + length and row <= ship_row + ship_len) and ship_col - 1 <= column <= ship_col + 1:
-            return False
-        if horizontal and ship_row - 1 <= row <= ship_row + ship_len and column + length >= ship_col:
-            return False
-    return True
+    def bad_cells_across(cell):
+        """Helper function to return prohibited rows or columns, depending on what changes when we move across the ship"""
+        return [cell + i for i in range(-1, +1 + 1)]
+    def bad_cells_along(cell, ship_length):
+        """Helper function to return prohibited rows or columns, depending on what changes when we move along the ship"""
+        return [cell + i for i in range(-1, ship_length + 1)]
+
+    # Create a set of cells that can't be occupied by the ship
+    cells_bad = set()
+    for ship in fleet:
+        if ship[2]: # if horizontal
+            rows_bad = bad_cells_across(ship[0]) 
+            cols_bad = bad_cells_along(ship[1], ship[3]) 
+        else: # if vertical
+            rows_bad = bad_cells_along(ship[0], ship[3]) 
+            cols_bad = bad_cells_across(ship[1])
+        for r in rows_bad:
+            for c in cols_bad:
+                cells_bad.add((r,c)) 
+                
+    Create a set of cells occupied by the ship
+    if horizontal:
+        cells_target = {(row, column + i) for i in range(length)}
+    else:
+        cells_target = {(row + i, column) for i in range(length)}
+
+    return len(cells_target & cells_bad) == 0
 
 def place_ship_at(row, column, horizontal, length, fleet):
     """Add a ship, specified by row, column, horizontal, and length to the fleet.
@@ -76,30 +90,36 @@ def randomly_place_all_ships():
             # call place_ship_at()
     pass
 
-def check_if_hits(row, column, fleet):
-    """Check if the shot of the human player at the square represented by row and column
-    hits any of the ships of the fleet.
-    Return a Boolean value.
-    """
-    for ship in fleet:
-        horizontal = ship[2]
-        ship_row = ship[0]
-        ship_col = ship[1]
-        ship_len = ship[3]
-        if not horizontal and 0 <= (row - ship_row) < ship_len and ship_col == column:
-            #call hit
-            return True
-        elif horizontal and ship_row == row and 0 <= (column - ship_col) < ship_len:
-            #call hit
-            return True 
-    return False
+# def check_if_hits(row, column, fleet):
+#     """Check if the shot of the human player at the square represented by row and column
+#     hits any of the ships of the fleet.
+#     Return a Boolean value.
+#     """
+    
+
+# def return index of ship was hit:
+#     for ship in fleet:
+#         horizontal = ship[2]
+#         ship_row = ship[0]
+#         ship_col = ship[1]
+#         ship_len = ship[3]
+#         # hitting vertical ships
+#         if not horizontal and 0 <= (row - ship_row) < ship_len and ship_col == column:
+#             #call hit
+#             return True
+#         # hitting horizontal ships
+#         elif horizontal and ship_row == row and 0 <= (column - ship_col) < ship_len:
+#             #call hit
+#             return True # index 
+#     return False
+
         
-def hit(row, column, fleet):
+def hit(row, column, fleet): # + index
     """Perform a hit in the fleet at the square represented by row and column. 
     Return a tuple (fleet1, ship) where ship is the ship from the fleet and fleet1 is the fleet resulting from this hit.
     """
-    for ship in fleet:
-        if ship[0]
+    # for ship in fleet:
+    #     if ship[0]
     # result = (,)
     # for ship in fleet:
     # fleet = [(2, 3, False, 3, {}), (4, 6, True, 2, {})]
