@@ -31,6 +31,12 @@ def test_is_open_sea1():
     assert is_open_sea(row, column, fleet) == False
     fleet = [(2, 3, False, 3, {(2,3)}), (4, 6, True, 2, {})]
     assert is_open_sea(row, column, fleet) == False
+    fleet = [(4, 6, True, 2, {})]
+    column = 4
+    row = 4 # 4, False, 2, )
+    assert is_open_sea(row, column, fleet) == True
+    row = 5
+    assert is_open_sea(row, column, fleet) == True
 
 def test_ok_to_place_ship_at1():
     # Test horizontal ship with vertical 

@@ -29,14 +29,14 @@ def is_open_sea(row, column, fleet):
     nor is adjacent to some ship in the fleet. 
     Return a Boolean value.
     """
-    for ship in fleet:
+    for ship in fleet:   
         horizontal = ship[2]
         ship_row = ship[0]
         ship_col = ship[1]
         ship_len = ship[3]
-        if not horizontal and abs(ship_row - row) <= ship_len and abs(ship_col - column) <= 1:
+        if horizontal and abs(ship_row - row) <= 1 and ship_col - 1 <= column <= ship_col + ship_len:
             return False
-        if horizontal and abs(ship_row - row) <= 1 and abs(ship_col - column) <= ship_len:
+        if not horizontal and abs(ship_col - column) <= 1 and ship_row - 1 <= row <= ship_row + ship_len:
             return False
     return True
 
@@ -44,34 +44,13 @@ def ok_to_place_ship_at(row, column, horizontal, length, fleet):
     """Check if addition of a ship to the fleet (specified by row, column, horizontal, and length) 
     results in a legal arrangement. 
     Return a Boolean value.
-    """
-    def bad_cells_across(cell):
-        """Helper function to return prohibited rows or columns, depending on what changes when we move across the ship"""
-        return [cell + i for i in range(-1, +1 + 1)]
-    def bad_cells_along(cell, ship_length):
-        """Helper function to return prohibited rows or columns, depending on what changes when we move along the ship"""
-        return [cell + i for i in range(-1, ship_length + 1)]
-
-    # Create a set of cells that can't be occupied by the ship
-    cells_bad = set()
-    for ship in fleet:
-        if ship[2]: # if horizontal
-            rows_bad = bad_cells_across(ship[0]) 
-            cols_bad = bad_cells_along(ship[1], ship[3]) 
-        else: # if vertical
-            rows_bad = bad_cells_along(ship[0], ship[3]) 
-            cols_bad = bad_cells_across(ship[1])
-        for r in rows_bad:
-            for c in cols_bad:
-                cells_bad.add((r,c)) 
-                
-    Create a set of cells occupied by the ship
-    if horizontal:
-        cells_target = {(row, column + i) for i in range(length)}
-    else:
-        cells_target = {(row + i, column) for i in range(length)}
-
-    return len(cells_target & cells_bad) == 0
+    """  
+    for i in range(length):   
+        if horizontal and not is_open_sea(row, column + i, fleet):
+                return False
+        elif not horizontal and not is_open_sea(row + i, column, fleet):
+                return False
+    return True
 
 def place_ship_at(row, column, horizontal, length, fleet):
     """Add a ship, specified by row, column, horizontal, and length to the fleet.
