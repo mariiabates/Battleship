@@ -7,18 +7,20 @@ def test_is_sunk1():
     assert is_sunk(s) == True
     s = (4, 5, False, 3, {(4,5), (5,5)})
     assert is_sunk(s) == False
+    s = (4, 7, True, 2, set())
+    assert is_sunk(s) == False
 
 def test_ship_type1():
-    s1 = (0, 0, True, 1, {}) # generate ships randomly?
-    assert ship_type(s1) == "submarine"
-    s2 = (2, 3, False, 2, {(2,3), (2,4)})
-    assert ship_type(s2) == "destroyer"
-    s3 = (5, 5, True, 3, {(5,5)})
-    assert ship_type(s3) == "cruiser"
-    s4 = (2, 1, False, 4, {})
-    assert ship_type(s4) == "battleship"
-    s5 = (1, 3, True, 4, {(1,3), (1,4)})
-    assert ship_type(s5) == "battleship"
+    s = (0, 0, True, 1, {}) # generate ships randomly?
+    assert ship_type(s) == "submarine"
+    s = (2, 3, False, 2, {(2,3), (2,4)})
+    assert ship_type(s) == "destroyer"
+    s = (5, 5, True, 3, {(5,5)})
+    assert ship_type(s) == "cruiser"
+    s = (2, 1, False, 4, {})
+    assert ship_type(s) == "battleship"
+    s = (1, 3, True, 4, {(1,3), (1,4)})
+    assert ship_type(s) == "battleship"
 
 def test_is_open_sea1():
     fleet = [(2, 3, False, 3, {(2,3)})]
@@ -142,13 +144,13 @@ def test_place_ship_at1():
     column = 3 
     horizontal = False
     length = 3
-    assert place_ship_at(row, column, horizontal, length, fleet) == [(2, 3, False, 3, {})]
+    assert place_ship_at(row, column, horizontal, length, fleet) == [(2, 3, False, 3, set())]
     fleet = [(2, 3, False, 3, {})]
     row = 4
     column = 6
     horizontal = True
     length = 2
-    assert place_ship_at(row, column, horizontal, length, fleet) == [(2, 3, False, 3, {}), (4, 6, True, 2, {})]
+    assert place_ship_at(row, column, horizontal, length, fleet) == [(2, 3, False, 3, set()), (4, 6, True, 2, set())]
 
 def test_check_if_hits1():
     # If hit same twice?
@@ -175,10 +177,14 @@ def test_check_if_hits1():
 
 def test_hit1():
     # Check return values
-    fleet = [(2, 3, False, 3, {}), (4, 6, True, 2, {})]
+    fleet = [(2, 3, False, 3, set()), (4, 6, True, 2, set())]
     row = 4
     column = 3
-    assert hit(row, column, fleet) == ([(2, 3, False, 3, {(4, 3)}), (4, 6, True, 2, {})], (2, 3, False, 3, {}))
+    assert hit(row, column, fleet) == ([(2, 3, False, 3, {(4, 3)}), (4, 6, True, 2, set())], (2, 3, False, 3, set()))
+    row = 3
+    fleet = [(4, 6, True, 2, set()), (2, 3, False, 3, {(4, 3)})]
+    assert hit(row, column, fleet) == ([(4, 6, True, 2, set()), (2, 3, False, 3, {(4, 3), (3, 3)})], (2, 3, False, 3, {(4, 3)}))
+
 
 def test_are_unsunk_ships_left1():
     ship1 = (2, 3, False, 3, {(2,3), (3,3), (4,3)}) # sunk
