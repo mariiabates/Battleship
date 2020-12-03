@@ -90,11 +90,12 @@ def hit(row, column, fleet):
     new_fleet = copy.deepcopy(fleet)
     for ship in fleet:
         if check_if_hits(row, column, [ship]):
-            s = ship
+            s = ship # add hits
             ind = fleet.index(ship)
             break
     # Add a square to the set of hits for the ship in fleet
     new_fleet[ind][4].add((row, column)) 
+    s[4].add((row, column))
     return (new_fleet, s)
 
 def are_unsunk_ships_left(fleet):
@@ -122,12 +123,13 @@ def main():
         current_column = int(loc_str[1])
         shots += 1
         if check_if_hits(current_row, current_column, current_fleet):
-            print("You have a hit!")
-            (current_fleet, ship_hit) = hit(current_row, current_column, current_fleet)
+            (current_fleet, ship_hit) = hit(current_row, current_column, current_fleet) 
             if is_sunk(ship_hit):
                 print("You sank a " + ship_type(ship_hit) + "!")
+            else:
+                print("You have a hit!", current_fleet)
         else:
-            print("You missed!")
+            print("You missed!", current_fleet)
 
         if not are_unsunk_ships_left(current_fleet): game_over = True
 
