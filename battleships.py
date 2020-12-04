@@ -32,8 +32,11 @@ def ok_to_place_ship_at(row, column, horizontal, length, fleet):
     results in a legal arrangement. 
     Return a Boolean value.
     """  
-    for i in range(length): 
+    # If the ship goes beyond the playing field, return False
+    if column + length > 10 or row + length > 10:
+        return False
     # Check if all squares occupied by the ship are in the open sea
+    for i in range(length): 
         if horizontal and not is_open_sea(row, column + i, fleet):
                 return False
         elif not horizontal and not is_open_sea(row + i, column, fleet):
@@ -90,7 +93,7 @@ def hit(row, column, fleet):
     new_fleet = copy.deepcopy(fleet)
     for ship in fleet:
         if check_if_hits(row, column, [ship]):
-            s = ship # add hits
+            s = ship
             ind = fleet.index(ship)
             break
     # Add a square to the set of hits for the ship in fleet
@@ -136,5 +139,8 @@ def main():
     print("Game over! You required", shots, "shots.")
 
 
-if __name__ == '__main__': #keep this in
+if __name__ == '__main__': 
    main()
+
+   # Add exit
+   # tkinter

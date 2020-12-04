@@ -6,12 +6,12 @@ def test_is_sunk1():
     s = (2, 3, False, 3, {(2,3), (3,3), (4,3)})
     assert is_sunk(s) == True
     s = (4, 5, False, 3, {(4,5), (5,5)})
-    assert is_sunk(s) == False 
+    assert is_sunk(s) == False
     s = (4, 7, True, 2, set())
     assert is_sunk(s) == False
 
 def test_ship_type1():
-    s = (0, 0, True, 1, set()) # generate ships randomly?
+    s = (0, 0, True, 1, set())
     assert ship_type(s) == "submarine"
     s = (2, 3, False, 2, {(2,3), (2,4)})
     assert ship_type(s) == "destroyer"
@@ -116,12 +116,13 @@ def test_ok_to_place_ship_at3():
     assert ok_to_place_ship_at(row, column, horizontal, length, fleet) == False
     column = 8 # right bound
     assert ok_to_place_ship_at(row, column, horizontal, length, fleet) == False
+    # beyond the field
     column = 9 
-    assert ok_to_place_ship_at(row, column, horizontal, length, fleet) == True
+    assert ok_to_place_ship_at(row, column, horizontal, length, fleet) == False
 
 def test_ok_to_place_ship_at4():
     # Test vertical ship with horizontal
-    fleet = [(4, 6, True, 2, set())]
+    fleet = [(4, 5, True, 2, set())]
     horizontal = False
     length = 2
     # Test upper and lower bound
@@ -132,11 +133,21 @@ def test_ok_to_place_ship_at4():
         assert ok_to_place_ship_at(row, column, horizontal, length, fleet) == True
     # Test left and right bound
     row = 4
-    for column in {4, 9}:
+    for column in {3, 8}:
         assert ok_to_place_ship_at(row, column, horizontal, length, fleet) == True
-    for column in {5, 7}: 
+    for column in {4, 7}: 
         assert ok_to_place_ship_at(row, column, horizontal, length, fleet) == False
-    
+
+def test_ok_to_place_ship_at5():
+    # Check boundaries of the playing field
+    fleet = []
+    horizontal = True
+    row = 9
+    column = 9
+    length = 1
+    ok_to_place_ship_at(row, column, horizontal, length, fleet) == True
+    length = 2
+    assert ok_to_place_ship_at(row, column, horizontal, length, fleet) == False
 
 def test_place_ship_at1():
     fleet = []
