@@ -121,26 +121,32 @@ def main():
     shots = 0
 
     while not game_over:
-        loc_str = input("Enter row and colum to shoot (separted by space): ").split()    
-        current_row = int(loc_str[0])
-        current_column = int(loc_str[1])
-        shots += 1
-        if check_if_hits(current_row, current_column, current_fleet):
-            (current_fleet, ship_hit) = hit(current_row, current_column, current_fleet) 
-            if is_sunk(ship_hit):
-                print("You sank a " + ship_type(ship_hit) + "!")
+        loc_str = input("Enter row and colum to shoot (separted by space) or X to exit: ").split()   
+        if loc_str[0] == "X":
+            game_over = True
+            break
+        try:
+            current_row = int(loc_str[0])
+            current_column = int(loc_str[1])
+            shots += 1
+            if check_if_hits(current_row, current_column, current_fleet):
+                (current_fleet, ship_hit) = hit(current_row, current_column, current_fleet) 
+                if is_sunk(ship_hit):
+                    print("You sank a " + ship_type(ship_hit) + "!")
+                else:
+                    print("You have a hit!")
             else:
-                print("You have a hit!", current_fleet)
-        else:
-            print("You missed!", current_fleet)
+                print("You missed!")
+        except (ValueError, IndexError):
+            print("Oops! That was not a valid input. Try again...")
 
-        if not are_unsunk_ships_left(current_fleet): game_over = True
-
-    print("Game over! You required", shots, "shots.")
+        if not are_unsunk_ships_left(current_fleet): 
+            game_over = True
+            print("Game over! You required", shots, "shots.")
 
 
 if __name__ == '__main__': 
    main()
 
-   # Add exit
+   # Add exit, handle exceptions
    # tkinter
