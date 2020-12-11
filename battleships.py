@@ -3,14 +3,15 @@ import copy, random
 
 def is_sunk(ship):
     """Check if the ship is sunk. Return a Boolean value."""
-    hits = ship[4]
+    hits_num = ship[4]
     ship_length = ship[3]
-    return len(hits) == ship_length
+    return len(hits_num) == ship_length
 
 def ship_type(ship):
     """Return type of the ship as a string."""
+    ship_length = ship[3]
     ship_dict = {1: "submarine", 2: "destroyer", 3: "cruiser", 4: "battleship"}
-    return ship_dict.get(ship[3])
+    return ship_dict.get(ship_length)
 
 def is_open_sea(row, column, fleet):
     """Check if the square given by row and column neither contains nor is adjacent to some ship in the fleet. 
@@ -32,10 +33,10 @@ def ok_to_place_ship_at(row, column, horizontal, length, fleet):
     results in a legal arrangement. 
     Return a Boolean value.
     """  
-    # If the ship goes beyond the playing field, return False
+    # If ship goes beyond the playing field, return False
     if column + length > 10 or row + length > 10:
         return False
-    # Check if all squares occupied by the ship are in the open sea
+    # If at least one square occupied by ship is not in open sea, return False
     for i in range(length): 
         if horizontal and not is_open_sea(row, column + i, fleet):
                 return False
@@ -66,7 +67,6 @@ def randomly_place_all_ships():
                 place_ship_at(row, column, horizontal, length, fleet)
                 done = True
     return fleet
-#print(randomly_place_all_ships())
 
 def check_if_hits(row, column, fleet):
     """Check if the shot of the human player at the square represented by row and column
@@ -90,15 +90,16 @@ def hit(row, column, fleet):
     """Perform a hit in the fleet at the square represented by row and column. 
     Return a tuple (fleet1, ship) where ship is the ship from the fleet and fleet1 is the fleet resulting from this hit.
     """
+    s = ()
     new_fleet = copy.deepcopy(fleet)
     for ship in fleet:
         if check_if_hits(row, column, [ship]):
             s = ship
             ind = fleet.index(ship)
+            # Add a square to the set of hits for the ship in fleet
+            new_fleet[ind][4].add((row, column)) 
+            s[4].add((row, column))
             break
-    # Add a square to the set of hits for the ship in fleet
-    new_fleet[ind][4].add((row, column)) 
-    s[4].add((row, column))
     return (new_fleet, s)
 
 def are_unsunk_ships_left(fleet):
@@ -121,32 +122,29 @@ def main():
     shots = 0
 
     while not game_over:
-        loc_str = input("Enter row and colum to shoot (separted by space) or X to exit: ").split()   
-        if loc_str[0] == "X":
-            game_over = True
-            break
         try:
+            loc_str = input("Enter row and colum to shoot (separted by space) or X to exit: ").split()   
+            if loc_str[0] == "X":
+                break
             current_row = int(loc_str[0])
             current_column = int(loc_str[1])
+            # Try to hit at given coordinates
+            ship_hit = hit(current_row, current_column, current_fleet)[1]
             shots += 1
-            if check_if_hits(current_row, current_column, current_fleet):
-                (current_fleet, ship_hit) = hit(current_row, current_column, current_fleet) 
-                if is_sunk(ship_hit):
-                    print("You sank a " + ship_type(ship_hit) + "!")
-                else:
-                    print("You have a hit!")
-            else:
+            if not ship_hit:
                 print("You missed!")
-        except (ValueError, IndexError):
+            elif is_sunk(ship_hit):
+                print("You sank a " + ship_type(ship_hit) + "!")
+            else:
+                print("You have a hit!") 
+        except(ValueError, IndexError):
             print("Oops! That was not a valid input. Try again...")
 
         if not are_unsunk_ships_left(current_fleet): 
             game_over = True
             print("Game over! You required", shots, "shots.")
 
-
 if __name__ == '__main__': 
    main()
 
-   # Add exit, handle exceptions
    # tkinter
