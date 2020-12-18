@@ -1,5 +1,6 @@
 #see the readme.md file for description and data 
 import copy, random 
+import numpy as np
 
 def is_sunk(ship):
     """Check if the ship is sunk. Return a Boolean value."""
@@ -109,6 +110,35 @@ def are_unsunk_ships_left(fleet):
             return True
     return False
 
+def build_field():
+    field = np.zeros(dtype=int, shape=(10,10))
+    return field
+    
+def update_field(field, row, col, action):
+    if action == "miss": n = 1
+    if action == "hit": n = 2
+    if action == "sink": n = 3
+    field[row, col] = n
+    return field
+
+def print_field(myfield):
+    field = myfield.tolist()
+    print(" | 0 1 2 3 4 5 6 7 8 9 ")
+    print("-  - - - - - - - - - - ")
+    for i in range(len(field)):
+        print(f"{i}|", end="")
+        for column in field[i]:
+            if column == 1:
+                print(" _", end="")
+            elif column == 2:
+                print(" x", end="")
+            elif column == 3:
+                print(" X", end="")
+            else:
+                print(" .", end="")
+        print()
+    print()
+
 def main():
     """Prompt the user to call out rows and columns of shots 
     and outputs the responses of the computer iteratively until the game stops.
@@ -117,6 +147,8 @@ def main():
     Returns nothing.
     """
     current_fleet = randomly_place_all_ships()
+    myfield = build_field()
+    print_field(myfield)
 
     game_over = False
     shots = 0
@@ -133,13 +165,18 @@ def main():
             shots += 1
             if not ship_hit:
                 print("You missed!")
+                update_field(myfield, current_row, current_column, "miss")
+                print_field(myfield)
             elif is_sunk(ship_hit):
                 print("You sank a " + ship_type(ship_hit) + "!")
+                update_field(myfield, current_row, current_column, "sink")
+                print_field(myfield)
             else:
                 print("You have a hit!") 
+                update_field(myfield, current_row, current_column, "hit")
+                print_field(myfield)
         except(ValueError, IndexError):
             print("Oops! That was not a valid input. Try again...")
-
         if not are_unsunk_ships_left(current_fleet): 
             game_over = True
             print("Game over! You required", shots, "shots.")
