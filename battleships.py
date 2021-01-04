@@ -1,6 +1,6 @@
 #see the readme.md file for description and data 
-import copy, random 
-import numpy as np
+import random
+random.seed(22)
 
 def is_sunk(ship):
     """Check if the ship is sunk. Return a Boolean value."""
@@ -31,13 +31,11 @@ def is_open_sea(row, column, fleet):
 
 def ok_to_place_ship_at(row, column, horizontal, length, fleet):
     """Check if addition of a ship to the fleet (specified by row, column, horizontal, and length) 
-    results in a legal arrangement. 
-    Return a Boolean value.
-    """  
-    # If ship goes beyond the playing field, return False
+    results in a legal arrangement. Return a Boolean value."""  
+    # Check if the ship goes beyond the playing field
     if column + length > 10 or row + length > 10:
         return False
-    # If at least one square occupied by ship is not in open sea, return False
+    # Check if there're squares occupied by the ship that are not in open sea
     for i in range(length): 
         if horizontal and not is_open_sea(row, column + i, fleet):
                 return False
@@ -47,15 +45,14 @@ def ok_to_place_ship_at(row, column, horizontal, length, fleet):
 
 def place_ship_at(row, column, horizontal, length, fleet):
     """Add a ship, specified by row, column, horizontal, and length to the fleet.
-    Return a new fleet. N.B. The function changes the original fleet."""
+    Return a new fleet. The function changes the original fleet."""
     fleet.append((row, column, horizontal, length, set()))
     return fleet 
 
 def randomly_place_all_ships():
-    """Make a random legal arrangement of 10 ships in the ocean. Return a fleet."""
+    """Make a random legal arrangement of 10 ships in the ocean. Return the fleet."""
     fleet = []
-    # for length in (4, 3, 3, 2, 2, 2, 1, 1, 1, 1):
-    for length in (4, 3, 2, 1): # testing field
+    for length in (4, 3, 3, 2, 2, 2, 1, 1, 1, 1):
         done = False
         while not done:
             row = random.randint(0, 9)
@@ -68,9 +65,7 @@ def randomly_place_all_ships():
 
 def check_if_hits(row, column, fleet):
     """Check if the shot of the human player at the square represented by row and column
-    hits any of the ships of the fleet.
-    Return a Boolean value.
-    """
+    hits any of the ships of the fleet. Return a Boolean value."""
     for ship in fleet:
         horizontal = ship[2]
         ship_row = ship[0]
@@ -87,18 +82,18 @@ def check_if_hits(row, column, fleet):
 def hit(row, column, fleet): 
     """Perform a hit in the fleet at the square represented by row and column. 
     Return a tuple (fleet1, ship) where ship is the ship from the fleet and fleet1 is the fleet resulting from this hit.
+    The function changes the original fleet.
     """
     s = ()
-    new_fleet = copy.deepcopy(fleet)
     for ship in fleet:
         if check_if_hits(row, column, [ship]):
             s = ship
             ind = fleet.index(ship)
-            # Add a square to the set of hits for the ship in fleet
-            new_fleet[ind][4].add((row, column)) 
+            # Add coordinates of the square to the set of hits for the ship in fleet
+            fleet[ind][4].add((row, column)) 
             s[4].add((row, column))
             break
-    return (new_fleet, s)
+    return (fleet, s)
 
 def are_unsunk_ships_left(fleet):
     """Check if there are ships in the fleet that are still not sunk. Return a Boolean value."""
@@ -107,50 +102,11 @@ def are_unsunk_ships_left(fleet):
             return True
     return False
 
-def build_field():
-    """Create an empty playing field. Return the field."""
-    field = np.full(dtype="str", shape=(10,10), fill_value=".")
-    return field
-    
-def update_field(field, row, col, action, cells_hit=set(), ship_name=""):
-    """Update the field after a hit. Return updated field."""
-    if action == "miss":
-        field[row, col] = "_"
-    if action == "hit":
-        field[row, col] = "x"
-    if action == "sink":
-        rows, cols = zip(*cells_hit)
-        rows, cols = sorted(rows), sorted(cols)
-        field[rows, cols] = ship_name[0].upper()
-    return field
-
-def print_field(field):
-    """Print the playing field to the terminal."""
-    print()
-    print("  | 0 1 2 3 4 5 6 7 8 9 | ")
-    print(" -  - - - - - - - - - -  -")
-    for row in range(len(field)):
-        print(f" {row}|", end="")
-        for square in field[row]:
-            print(f" {square}", end="")
-        print(f" |{row}")
-    print(" -  - - - - - - - - - -  -")
-    print("  | 0 1 2 3 4 5 6 7 8 9 | ")
-    print()
-
 def main():
-    """Prompt the user to call out rows and columns of shots 
-    and outputs the responses of the computer iteratively until the game stops.
-    (a) there must be an option for the human player to quit the game at any time, 
-    (b) the program must never crash (i.e., no termination with Python error messages), whatever the human player does.
-    Returns nothing.
+    """Prompt the user to call out rows and columns of shots and outputs the responses of the computer iteratively until the game stops.
+    Returns nothing. No visualisation.
     """
-    random.seed(109)
-
     current_fleet = randomly_place_all_ships()
-    myfield = build_field()
-    print_field(myfield)
-
     game_over = False
     shots = 0
 
@@ -161,23 +117,16 @@ def main():
                 break
             current_row = int(loc_str[0])
             current_column = int(loc_str[1])
-            # Try to hit at given coordinates
+            # Try to hit a ship at given row and column
             ship_hit = hit(current_row, current_column, current_fleet)[1]
             shots += 1
             if not ship_hit:
                 print(f"Shooting at row {current_row}, column {current_column}. You missed!")
-                # print(current_fleet)
-                update_field(myfield, current_row, current_column, "miss")
-                print_field(myfield)
             elif is_sunk(ship_hit):
                 ship_name = ship_type(ship_hit)
                 print("You sank a " + ship_name + "!")
-                update_field(myfield, current_row, current_column, "sink", ship_hit[4], ship_name)
-                print_field(myfield)
             else:
                 print(f"Shooting at row {current_row}, column {current_column}. You have a hit!") 
-                update_field(myfield, current_row, current_column, "hit")
-                print_field(myfield)
         except(ValueError, IndexError):
             print("Oops! That wasn't a valid input. Try again...")
         if not are_unsunk_ships_left(current_fleet): 
