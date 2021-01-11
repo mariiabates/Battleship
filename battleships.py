@@ -45,7 +45,8 @@ def ok_to_place_ship_at(row, column, horizontal, length, fleet):
 
 def place_ship_at(row, column, horizontal, length, fleet):
     """Add a ship, specified by row, column, horizontal, and length to the fleet.
-    Return a new fleet. The function changes the original fleet."""
+    Return a new fleet. N.B. The function is part of randomly_place_all_ships() and changes the input fleet to save on memory. 
+    The input is not passed manually from main(), so we don't risk undesirable changes to the input."""
     fleet.append((row, column, horizontal, length, set()))
     return fleet 
 
@@ -82,7 +83,7 @@ def check_if_hits(row, column, fleet):
 def hit(row, column, fleet): 
     """Perform a hit in the fleet at the square represented by row and column. 
     Return a tuple (fleet1, ship) where ship is the ship from the fleet and fleet1 is the fleet resulting from this hit.
-    The function changes the original fleet.
+    N.B. The function modifies the input fleet to save on space.
     """
     s = ()
     for ship in fleet:
@@ -109,10 +110,11 @@ def main():
     current_fleet = randomly_place_all_ships()
     game_over = False
     shots = 0
+    squares_taken = set()
 
     while not game_over:
         try:
-            loc_str = input("Enter row and column to shoot (separate by space) or X to exit: ").split()   
+            loc_str = input("Enter row and column to shoot (separated by space) or X to exit: ").split()   
             if loc_str[0] == "X":
                 break
             current_row = int(loc_str[0])
@@ -120,13 +122,15 @@ def main():
             # Try to hit a ship at given row and column
             ship_hit = hit(current_row, current_column, current_fleet)[1]
             shots += 1
-            if not ship_hit:
+            if not ship_hit or (current_row, current_column) in squares_taken:
                 print(f"Shooting at row {current_row}, column {current_column}. You missed!")
             elif is_sunk(ship_hit):
                 ship_name = ship_type(ship_hit)
-                print("You sank a " + ship_name + "!")
+                print(f"You sank a {ship_name}!")
+                squares_taken.add((current_row, current_column))
             else:
                 print(f"Shooting at row {current_row}, column {current_column}. You have a hit!") 
+                squares_taken.add((current_row, current_column))
         except(ValueError, IndexError):
             print("Oops! That wasn't a valid input. Try again...")
         if not are_unsunk_ships_left(current_fleet): 
