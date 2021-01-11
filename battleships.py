@@ -1,6 +1,5 @@
 #see the readme.md file for description and data 
 import random
-random.seed(22)
 
 def is_sunk(ship):
     """Check if the ship is sunk. Return a Boolean value."""
