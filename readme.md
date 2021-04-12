@@ -1,10 +1,5 @@
  ## BATTLESHIPS
- Purposes of this assignment: 
- 
-
- - To give you more experience with collections (tuples, sets, ...)
- - To give you experience of writing tests and TDD-style development
- - To give you experience of working with output and graphics
+The project was implemented as part of an academic assignment according to the specifications below. 
  
  ## General idea of the assignment
 
@@ -105,8 +100,6 @@ Your project mark according to the following criteria:
 |Coding Style|10%|
 |Extension|30%|
 
-There is no pass/fail on the project. Pass/fail is calculated for the whole coursework (project + session assignments) only. 
-
 Notes:
 
  - You don't have to implement the extension, but your maximal mark will be 70% if you don't
@@ -116,22 +109,3 @@ Notes:
  - Tests are essential and you must aim to provide at least 5 tests for each testable required function.  Quality of the tests matters more than quantity. Try to make your tests maximally diverse so that they catch problems with various inputs. The tests contribute to your project mark.
  - If description of a testable required function above specifies an assumption about the function input (e.g., it may be assumed that input has property X), do not write tests with inputs not satisfying these assumptions (i.e., inputs not satisfying property X). 
  - Extension is marked according to correctness, coding style and satisfaction of the expectations above (see *Extension*)
-
-## Hints and Suggestions
-- `main()` function in `battleships.py` is already implemented in a minimalistic way. You can keep this implementation as is or you can rewrite it (e.g., by adding an option for the user to quit the game at any point). If you rewrite, make sure that your implementation works correctly, or you'll lose marks
-- To implement the function `randomly_place_all_ships()`, you can use the `random` library and its `randint` method. When placing ships randomly, start with the ships of the biggest size and end with those of the smallest size
-- We do not prescribe any specific structure of the test file `test_battleships.py`. For each testable function, there must be at least five tests present in it, but its up to you if to put these five in a single test function, in separate test functions, or use fixtures. Any of these methods may give you full marks (if tests are of high quality).  
-- Work in the TDD (Test Driven Development) style!
-- For the visualisation extension, you can either use printing in terminal or any standard graphic library (e.g., tkinter). Any of these methods may give you full marks (if implementation is of high quality). If you use graphic libraries, they must satisfy the requirements from *Extra Libraries/Packages* above.
-
-## Submission
-
-To submit your solution, simply commit and push all the required files (see *Files and Repo*), to the assigned GitHub repo by the corresponding deadline. If you have any commits after the deadline, we will disregard them and mark the last commit before the deadline. If you intend to submit late (subject to usual penalties for late coursework submission), you must inform the module leader by emailing to vlad@dcs.bbk.ac.uk (If you don't inform us about a late submission, we will mark your last commit before the deadline and this will be your project mark.)
-
-## Academic Declaration and Plagiarism
-
-The college policy on assessment offences can be found here: http://www.bbk.ac.uk/registry/policies/documents/assessment-offences-policy.pdf
-
-By putting code in the assigned Birkbeck repo, you certify the following: "I have read and understood the sections of plagiarism in the College Policy on assessment offences and confirm that the work is my own. I give my permission to submit my work to the plagiarism testing database that the College is using and test it using plagiarism detection software, search engines or meta-searching software."
-
-The POP1 good practice advise (https://moodle.bbk.ac.uk/mod/book/view.php?id=853884&chapterid=35714) stands for this project as well. In particular, you can ask for help from the teachers or students and provide help to other students. However, the code of each submission must be own work of the submitting student.
