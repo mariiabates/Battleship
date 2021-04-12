@@ -1,5 +1,10 @@
  ## BATTLESHIPS
-The project was implemented as part of an academic assignment according to the specifications below. 
+The project was implemented on my own as part of an academic assignment and received the highest score. Originally it was developed in a separate uni branch and further imported in this repository. All commits on behalf of Maria Soloveva are mine. 
+
+Project files:  
+`battleships.py` -- run this file to play the game without visualisation (was developed with respect to the functions and data structures specified below);  
+`extension.py` -- run this file to play the game with a CLI visualisation implemented using NumPy (`battleships.py` is also required in the same directory);  
+`test_battleships.py` -- tests used in development (admittedely, some of them were blown out of proportion to cover the required number of tests).  
  
  ## General idea of the assignment
 
